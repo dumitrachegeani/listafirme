@@ -21,11 +21,6 @@ import const
 def write_to_csv(companies, filename, bilant_filename):
     with open(filename, 'a+', newline='') as file:
         writer = csv.writer(file)
-        # Writing headers (field names)
-        writer.writerow(
-            ["Name", "CUI", "Registration Number", "EUID", "Start Date", "Description", "State", "City", "Address",
-             "Phones", "Fax", "Email",
-             "Website", "CAEN", "Activity", "Description of Activity"])
         # Writing data rows
         for company in companies:
             writer.writerow(
@@ -200,6 +195,16 @@ def parse_firms_page(driver: WebDriver):
     write_to_csv(companies_list, 'companies.csv', 'bilant.csv')
 
 
+def write_header():
+    with open("companies.csv", 'a+', newline='') as file:
+        writer = csv.writer(file)
+        # Writing headers (field names)
+        writer.writerow(
+            ["Name", "CUI", "Registration Number", "EUID", "Start Date", "Description", "State", "City", "Address",
+             "Phones", "Fax", "Email",
+             "Website", "CAEN", "Activity", "Description of Activity"])
+
+
 # Main flow
 if __name__ == "__main__":
     windscribe.login('geanyhalav', 'croco2001')
@@ -221,11 +226,12 @@ if __name__ == "__main__":
             driver.switch_to.alert.accept()
         except:
             pass
+        write_header()
         for i in range(1, 28157):
             # Implement the logic to go to next page
             link = f'https://www.listafirme.ro/pagini/p{i}.html'
+            print(f"Scrapping page {i}")
             driver.get(link)
-
             parse_firms_page(driver)
             time.sleep(random_sleep())
 
