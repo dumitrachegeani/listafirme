@@ -10,7 +10,7 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from windscribe import windscribe
+# from windscribe import windscribe
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
@@ -43,7 +43,7 @@ def write_to_csv(companies, filename, bilant_filename):
 
 # Function to return a random sleep time
 def random_sleep():
-    windscribe.connect(rand=True)
+    # windscribe.connect(rand=True)
     return random.randint(1, 3)
 
 
@@ -166,8 +166,8 @@ def process_data(firm_link, driver: WebDriver):
         if 'Descriere Activitate' in row.text:
             start = len('Descriere Activitate')
             description_of_activity = row.text[start:].strip()
-    bilant = driver.find_element(By.ID, 'bilant')
     try:
+        bilant = driver.find_element(By.ID, 'bilant')
         bilant = bilant.text
     except:
         bilant = ""
@@ -183,15 +183,27 @@ def parse_firms_page(driver: WebDriver):
     # one page of companies mining
     rows = driver.find_elements(By.XPATH, xpath)
     companies_list = []
+    link_list = []
     for row in rows:
         try:
             a_tags = row.find_element(By.TAG_NAME, 'a')
             firm_link = a_tags.get_property('href')
         except:
             continue
-        print(f'Mining {firm_link}')
-        company = process_data(firm_link, driver)
+        link_list.append(firm_link)
+
+    i = 0
+    for link in link_list:
+        print(f'Mining {link}')
+
+        try:
+            company = process_data(link, driver)
+        except Exception:
+            print(f"Eroare la {link}")
+            continue
         companies_list.append(company)
+        i += 1
+        print(f"A minat {i}/50 de pe aceasta pagina")
     write_to_csv(companies_list, 'companies.csv', 'bilant.csv')
 
 
@@ -207,7 +219,7 @@ def write_header():
 
 # Main flow
 if __name__ == "__main__":
-    windscribe.login('geanyhalav', 'croco2001')
+    # windscribe.login('geanyhalav', 'croco2001')
 
     username = const.email
     password = const.password
