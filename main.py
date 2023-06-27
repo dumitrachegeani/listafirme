@@ -179,7 +179,7 @@ def process_data(firm_link, driver: WebDriver):
     random_sleep()
     driver.get(firm_link)
     randam = random.randint(100, 1000)
-    driver.execute_script(f"window.scrollTo(0, {randam})", )
+    driver.execute_script(f"window.scrollTo(0, {randam})")
     # Initialize all fields to an empty string
     name = cui = nr_inmatriculare = euid = start_date = company_description = state = city = address = phones = fax = email = website = caen = activity = description_of_activity = bilant = ""
 
