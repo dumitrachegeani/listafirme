@@ -14,6 +14,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+import undetected_chromedriver as uc
 
 import const
 
@@ -230,7 +231,10 @@ if __name__ == "__main__":
     options = Options()
     options.add_argument("start-maximized")
     options.add_argument(f'user-agent={user_agent}')
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+    driver = uc.Chrome(headless=False, use_subprocess=False)
+
+    # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
     try:
         login(driver, username, password)
