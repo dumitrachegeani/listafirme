@@ -134,7 +134,7 @@ def random_scroll(driver):
     randam = random.randint(0, 1080)
     driver.execute_script(f"window.scrollTo(0, {randam})")
 
-
+# TODO : Cosmin, in special functia asta e baza
 def scrape_one_page(driver: WebDriver):
     xpath = '/html/body/div[1]/main/section/div/table/tbody/tr'
     # one page of companies mining
